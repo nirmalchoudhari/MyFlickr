@@ -24,6 +24,7 @@ class PhotosViewController: UICollectionViewController {
         _searchController.searchBar.sizeToFit()
         _searchController.searchBar.placeholder = Constants.searchbarPlaceholder
         _searchController.obscuresBackgroundDuringPresentation = false
+        _searchController.searchBar.accessibilityIdentifier = "id_search_bar"
         return _searchController
     }
 
@@ -32,6 +33,7 @@ class PhotosViewController: UICollectionViewController {
 
         let flowLayout = ColoumnFlowLayout(itemsPerRow: PhotosViewControllerConstant.itemsPerRow,  minimumInteritemSpacing: 12, sectionInset: PhotosViewControllerConstant.sectionInsets)
         collectionView.collectionViewLayout = flowLayout
+        collectionView.accessibilityIdentifier = "id_collectio_view"
         if #available(iOS 11.0, *) {
             collectionView.contentInsetAdjustmentBehavior = .always
         }
@@ -60,7 +62,8 @@ extension PhotosViewController {
 
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PhotosViewControllerConstant.reuseIdentifier, for: indexPath) as! PhotoCell
-
+        cell.accessibilityIdentifier = "id_photo_cell_\(indexPath.row)"
+        cell.imageView.accessibilityIdentifier = "id_image_\(indexPath.row)"
         let photo = viewModel.photo(for: indexPath)
         cell.setup(with: photo)
 
@@ -76,6 +79,7 @@ extension PhotosViewController {
                 return
             }
             footer.startLoading()
+            footer.accessibilityIdentifier = "id_footer_refresh_loader"
             viewModel.loadPhotos(for: viewModel.latestSearchText, page: viewModel.latestPage + 1){ [weak self] _,_ in
                 footer.stopLoading()
                 self?.reloadData()
@@ -96,6 +100,7 @@ private extension PhotosViewController {
         errorLabel.text = msg
         errorLabel.numberOfLines = 0
         errorLabel.textAlignment = .center
+        errorLabel.accessibilityIdentifier = "id_error_label"
         collectionView.backgroundView = errorLabel
 
     }

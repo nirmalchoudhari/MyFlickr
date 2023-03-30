@@ -35,6 +35,4 @@ final class ColoumnFlowLayout: UICollectionViewFlowLayout {
         itemSize = CGSize(width: width, height: width)
         footerReferenceSize = CGSize(width: collectionView.bounds.width, height: 50)
     }
-
-    
 }
